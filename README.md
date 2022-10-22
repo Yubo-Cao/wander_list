@@ -1,5 +1,5 @@
 # Wander List
-![alt text](https://github.com/Yubo-Cao/traveler/blob/master/Wander%20List%20Logo.png?raw=true) \
+![alt text](https://github.com/Yubo-Cao/traveler/blob/master/Wander%20List%20Logo.png?raw=true)
 ## Inspiration
 We were inspired by apps like GeoCache and TripAdvisor for the making of this project. We wanted to be able to combine the interactivity of geocaching with the social factor of TripAdvisor (commenting and viewing other user profiles).
 
