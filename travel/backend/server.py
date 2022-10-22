@@ -11,6 +11,23 @@ app = Flask(
 app.config["DEBUG"] = True
 
 
+@app.route("/unregister", methods=["POST", "GET"])
+def unregister():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        with DBSession() as session:
+            user = session.query(User).filter_by(username=username).first()
+            if user is None:
+                return jsonify({"message": "User does not exist."})
+            if user.password != password:
+                return jsonify({"message": "Incorrect password."})
+            session.delete(user)
+            session.commit()
+        return jsonify({"message": "Unregister successful."})
+    return jsonify({"message": "Unregister failed."})
+
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":

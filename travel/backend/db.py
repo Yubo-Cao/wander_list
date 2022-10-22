@@ -43,7 +43,7 @@ class User(Base):
     __tablename__ = "users"
 
     id: int = Column(Integer, primary_key=True)
-    username: str = Column(String(20))
+    username: str = Column(String(20), unique=True)
     password: str = Column(String(20))
     email: str = Column(String(50))
     level: Level = Column(Enum(Level))
