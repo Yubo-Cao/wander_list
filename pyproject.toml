@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "travel"
+version = "0.1.0"
+description = ""
+authors = ["'Yubo-Cao' <'cao2006721@gmail.com'>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.2.2"
+SQLAlchemy = "^1.4.42"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^0.982"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
