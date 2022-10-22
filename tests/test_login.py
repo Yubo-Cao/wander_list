@@ -7,6 +7,11 @@ URL = "http://127.0.0.1:5000"
 
 
 def test_register():
+    try:
+        requests.post(URL + "/unregister", data={"username": USERNAME})
+    except requests.exceptions.ConnectionError:
+        pass
+
     response = requests.post(
         URL + "/register", data={"username": USERNAME, "password": PASSWORD}
     )
