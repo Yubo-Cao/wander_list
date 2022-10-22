@@ -1,5 +1,5 @@
 # Wander List
-![alt text](https://github.com/Yubo-Cao/traveler/blob/master/Wander%20List%20Logo.png?raw=true)
+![alt text](https://github.com/Yubo-Cao/traveler/blob/master/Wander%20List%20Logo.png?raw=true) \
 This program is a website that provide users with a list of places to visit
 in the world. The user can add places to the list, and also remove places
 from the list. The user can also edit the places in the list.
