@@ -18,4 +18,8 @@ This is a flask app that uses a sqlite database to store the places. Object
 relationship mapping is used to map the database to the python objects (sql
 alchemy).
 
+# Media
 
+<p align="center">
+  <img src="media.png">
+</p>

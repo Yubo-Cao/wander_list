@@ -6,6 +6,27 @@ PASSWORD = "Anish Goyal"
 URL = "http://127.0.0.1:5000"
 
 
+def test_register():
+    # ensure the user does not exist
+    try:
+        requests.post(URL + "/unregister", data={"username": USERNAME})
+    except:
+        pass
+
+    response = requests.post(
+        URL + "/register", data={"username": USERNAME, "password": PASSWORD}
+    )
+    assert response.status_code == 200
+    assert response.json()["message"] == "Register successful."
+
+    # test regsitering with same username
+    response = requests.post(
+        URL + "/register", data={"username": USERNAME, "password": PASSWORD}
+    )
+    assert response.status_code == 200
+    assert response.json()["message"] == "Username already exists."
+
+
 def test_unregister():
     response = requests.post(URL + "/unregister", data={"username": USERNAME})
     assert response.status_code == 200
@@ -27,28 +48,6 @@ def test_unregister():
     )
     assert response.status_code == 200
     assert response.json()["message"] == "Incorrect password."
-
-
-def test_register():
-    # ensure the user does not exist
-    try:
-        requests.post(URL + "/unregister", data={"username": USERNAME})
-    except:
-        pass
-
-    response = requests.post(
-        URL + "/register", data={"username": USERNAME, "password": PASSWORD}
-    )
-    assert response.status_code == 200
-    assert response.json()["message"] == "Register successful."
-
-    # test regsitering with same username
-    response = requests.post(
-        URL + "/register", data={"username": USERNAME, "password": PASSWORD}
-    )
-    assert response.status_code == 200
-    assert response.json()["message"] == "Username already exists."
-
 
 def test_login():
     response = requests.post(
