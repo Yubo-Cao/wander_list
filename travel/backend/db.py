@@ -1,23 +1,23 @@
-import dataclasses
 import datetime
-from enum import Enum
+import enum
 from typing import *
 
-form sqlalchemy import Column, Integer, String, DateTime, Enum, create_engine
+from sqlalchemy import Column, Integer, String, DateTime, Enum, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
 Base = declarative_base()
 
-class Category(Enum):
+
+class Category(enum.Enum):
     CULTURE = 1
     FOOD = 2
-    OUTDOORS = 4
-    SHOPPING = 5
-    SPORTS = 6
-    LANDMARK = 7
+    OUTDOORS = 3
+    SHOPPING = 4
+    SPORTS = 5
+    LANDMARK = 6
 
-@dataclasses.dataclass
+
 class Event(Base):
     __tablename__ = "events"
 
@@ -29,7 +29,7 @@ class Event(Base):
     category: Category = Column(Enum(Category))
 
 
-class Level(Enum):
+class Level(enum.Enum):
     BEGINNER = 1
     INTERMEDIATE = 2
     ADVANCED = 3
@@ -39,7 +39,6 @@ class Level(Enum):
 Timeline = List[Event]
 
 
-@dataclasses.dataclass
 class User(Base):
     __tablename__ = "users"
 
@@ -51,7 +50,6 @@ class User(Base):
     timeline: Timeline = relationship("Event", back_populates="user")
 
 
-@dataclasses
 class Thread(Base):
     __tablename__ = "threads"
 
