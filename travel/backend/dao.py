@@ -1,10 +1,14 @@
-import inspect
-import os
+import datetime
 from collections.abc import Callable
 from typing import TypeVar
 
-import requests
 from flask import jsonify
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from yarl import URL
 
 from travel.backend.db import DBSession, Event, Level, Thread, User
 
@@ -57,12 +61,11 @@ def profile(user):
         number_of_threads = len(threads)
         xp = number_of_city_visited * 10 + number_of_events * 5
         streak = 0
-        events = sorted(events, key=lambda event: event.date)
+
+        events = sorted(events, key=lambda event: event.date, reverse=True)
         for i in range(len(events) - 1):
-            if events[i + 1].date - events[i].date == datetime.timedelta(days=1):
+            if events[i + 1].date - events[i].date <= datetime.timedelta(days=7):
                 streak += 1
-            else:
-                break
 
         percent_category = {}
         return jsonify(
@@ -79,22 +82,51 @@ def profile(user):
             }
         )
 
-
 @ensure_login
 def get_recommendation(user):
     pass
 
+_map_base_url = URL("https://www.google.com/maps")
+
+def _query_google_map(query):
+    return _map_base_url.with_query({"q": query})
+
+_chrome_options = Options()
+_chrome_options.add_argument("--headless")
+_driver = webdriver.Chrome(options=_chrome_options)
+
+
+def _get_common_places(city: str):
+    """
+    Calling google map to get common places
+    """
+
+    import os
+    os.environ["PATH"] = os.getcwd() + r"\bin"
+
+    
+    _driver.get(str(_query_google_map(city)))
+    WebDriverWait(_driver, 10).until(EC.url_changes(_driver.current_url))
+    return [
+        dict(
+            zip(
+                "name rate reviews description".split(" "),
+                e.get_attribute("aria-label").split(" · "),
+            )
+        )
+        for e in _driver.find_element(
+            By.CSS_SELECTOR,
+            'div[aria-label*="Iconic"]',
+        ).find_elements(By.CSS_SELECTOR, ".dryRY>div")
+    ]
 
 def get_common_places(city: str):
     """
-    Calling google map API to get common places
-    """
-
-    url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
-    params = {
-        "query": city,
-        "key": os.environ["GOOGLE_MAPS_API_KEY"],
+    Return: {
+        "places": places (list[dict])
     }
-    response = requests.get(url, params=params)
-    response.raise_for_status()
-    return response.json()
+    """
+    try:
+        return jsonify({"places": _get_common_places(city)})
+    except Exception as e:
+        return jsonify({"places": []})
