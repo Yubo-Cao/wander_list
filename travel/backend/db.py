@@ -2,7 +2,15 @@ import datetime
 import enum
 from typing import *
 
-from sqlalchemy import Column, Integer, String, DateTime, Enum, create_engine
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    DateTime,
+    Enum,
+    create_engine,
+    ForeignKey,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -27,6 +35,8 @@ class Event(Base):
     date: datetime.date = Column(DateTime)
     ranking: int = Column(Integer)
     category: Category = Column(Enum(Category))
+
+    user_id = Column(Integer, ForeignKey("users.id"))
 
 
 class Level(enum.Enum):
