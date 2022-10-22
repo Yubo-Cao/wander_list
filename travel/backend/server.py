@@ -88,6 +88,10 @@ def thread():
     elif request.method == "GET":
         return app.send_static_file("thread.html")
 
+# create profile
+@app.route("/profile", methods=["GET"])
+def profile():
+    return app.send_static_file("html/profile.html")
 
 # create event
 @app.route("/event", methods=["POST", "GET"])
