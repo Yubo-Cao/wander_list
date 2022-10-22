@@ -21,7 +21,7 @@ def login():
         else:
             return jsonify({'message': 'Incorrect password.'})
     elif request.method == 'GET':
-        return app.send_static_file('signin.html')
+        return app.send_static_file('signin_side.html')
 
 
 # register
