@@ -96,4 +96,3 @@ def events():
         with DBSession() as session:
             events = session.query(Event).all()
             return jsonify(events)
-    
