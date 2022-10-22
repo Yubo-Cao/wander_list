@@ -1,8 +1,13 @@
 from flask import request, jsonify, Flask
 from travel.backend.db import DBSession, User, Event, Thread, Level
+import os
 
 
-app = Flask(__name__)
+app = Flask(
+    "travel",
+    static_url_path="",
+    static_folder=os.getcwd() + "/static",
+)
 app.config["DEBUG"] = True
 
 
@@ -119,22 +124,32 @@ def events():
 def redirect_to_index():
     return app.send_static_file("index.html")
 
+
 @app.route("/index")
 def index():
     return app.send_static_file("index.html")
 
-@app.route('/static/<path:path>')
+
+@app.route("/index.html")
+def index_html():
+    return app.send_static_file("index.html")
+
+
+@app.route("/static/<path:path>")
 def send_static(path):
     return app.send_static_file(path)
 
-@app.route('/css/<path:path>')
+
+@app.route("/css/<path:path>")
 def send_css(path):
-    return app.send_static_file('css/' + path)
+    return app.send_static_file("css/" + path)
 
-@app.route('/js/<path:path>')
+
+@app.route("/js/<path:path>")
 def send_js(path):
-    return app.send_static_file('js/' + path)
+    return app.send_static_file("js/" + path)
 
-@app.route('/img/<path:path>')
+
+@app.route("/img/<path:path>")
 def send_img(path):
-    return app.send_static_file('img/' + path)
+    return app.send_static_file("img/" + path)
