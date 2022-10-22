@@ -6,10 +6,34 @@ PASSWORD = "Anish Goyal"
 URL = "http://127.0.0.1:5000"
 
 
+def test_unregister():
+    response = requests.post(URL + "/unregister", data={"username": USERNAME})
+    assert response.status_code == 200
+    assert response.json()["message"] == "Unregister successful."
+
+    # test unregistering a non-existing user
+    response = requests.post(URL + "/unregister", data={"username": USERNAME})
+    assert response.status_code == 200
+    assert response.json()["message"] == "User does not exist."
+
+    # test unregistering with incorrect password
+    response = requests.post(
+        URL + "/register", data={"username": USERNAME, "password": PASSWORD}
+    )
+    assert response.status_code == 200
+    assert response.json()["message"] == "Register successful."
+    response = requests.post(
+        URL + "/unregister", data={"username": USERNAME, "password": "wrong password"}
+    )
+    assert response.status_code == 200
+    assert response.json()["message"] == "Incorrect password."
+
+
 def test_register():
+    # ensure the user does not exist
     try:
         requests.post(URL + "/unregister", data={"username": USERNAME})
-    except requests.exceptions.ConnectionError:
+    except:
         pass
 
     response = requests.post(
